@@ -45,7 +45,10 @@ message_batch_size = 1
 quitting = False
 
 if args.chat:
-    chat_id = args.chat
+    if "https://t.me/" in args.chat:
+        chat_id = args.chat.replace("https://t.me/","")
+    else:
+        chat_id = args.chat
 else:
     parser.print_help()
     sys.exit(1)
