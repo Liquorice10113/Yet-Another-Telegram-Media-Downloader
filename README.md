@@ -27,6 +27,7 @@ As simple as:
 ```
 python3 download.py -c "https://t.me/xxx1234"
 ```
+Files will be saved in `{current_dir}/{chat_name}/`.
 Full usage:
 ```
 usage: download.py [-h] [-c CHAT]
