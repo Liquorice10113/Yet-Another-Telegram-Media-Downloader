@@ -30,11 +30,13 @@ python3 download.py -c "https://t.me/xxx1234"
 Files will be saved in `{current_dir}/{chat_name}/`.
 Full usage:
 ```
-usage: download.py [-h] [-c CHAT]
+usage: download.py [-h] [-c CHAT] [-l 100]
 Yet Another Telegram Media Downloader.
 options:
   -h, --help            show this help message and exit
   -c CHAT, --chat CHAT  Specify a chat name like "https://t.me/xxx1234" or just "xxx1234".
+  -l 100, --limit-size 100
+                        Specify a file size limit(MB), default to 100, files larger than this value will be skipped.
 ```
 
 ### TODO
