@@ -41,7 +41,7 @@ if os.name == 'nt':
 else:
     path_divider = "/"
 
-message_batch_size = 1
+message_batch_size = 100
 quitting = False
 
 if args.chat:
@@ -56,7 +56,7 @@ else:
 
 def progress_bar(current, total):
     p = current/total
-    print("\r[" + int(20*p)*"▮"+int(20*(1-p))*"▯", end="]")
+    print("\r[" + int(20*p)*"▮"+int(20*(1-p))*"▯", end="] {:.2f}/{:.2f}MB".format(current/1024**2,total/1024**2) )
     sys.stdout.flush()
 
 
@@ -64,7 +64,7 @@ async def main():
     global quitting
     if not path.exists(chat_id):
         mkdir(chat_id)
-    async with Client("my_account", C.api_id, C.api_hash) as app:
+    async with Client("my_account", C.api_id, C.api_hash,sleep_threshold=6000) as app:
 
         chat_history_count = await app.get_chat_history_count(chat_id)
         print(chat_history_count)
@@ -81,6 +81,7 @@ async def main():
                     # print(message)
                     if (quitting):
                         break
+                    # print("Processing message",message.id,'...')
                     if message.from_user:
                         print("{}:[{}]{}".format(
                             message.from_user.username, message.id, message.text))
