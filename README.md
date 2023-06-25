@@ -33,13 +33,13 @@ Full usage:
 usage: download.py [-h] [-c CHAT] [-l 100]
 Yet Another Telegram Media Downloader.
 options:
-  -h, --help            show this help message and exit
+  -h, --help            Show this help message and exit
   -c CHAT, --chat CHAT  Specify a chat name like "https://t.me/xxx1234" or just "xxx1234".
   -l 100, --limit-size 100
                         Specify a file size limit(MB), default to 100, files larger than this
                         value will be skipped.
-  -r, --reverse-order   Enable download from new to old. Some server will put you into
-                        floodwait if you try to access oldest chat message.
+  -r, --reverse-order   Enable download from new to old. Some servers will put you into
+                        floodwait if you try to access some of the oldest chat messages.
 ```
 
 ### TODO
