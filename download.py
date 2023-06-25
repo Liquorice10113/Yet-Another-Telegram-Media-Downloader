@@ -26,7 +26,7 @@ parser.add_argument('-c', '--chat', type=str,
                     help='Specify a chat name like "https://t.me/xxx1234" or just "xxx1234". ')
 parser.add_argument('-l', '--limit-size', type=int, metavar=100,
                     help='Specify a file size limit(MB), default to 100, files larger than this value will be skipped.')
-parser.add_argument('-r', '--reverse-order', action='store_true', help='Enable download from new to old. Some server will put you into floodwait if you try to access oldest chat message.')
+parser.add_argument('-r', '--reverse-order', action='store_true', help='Enable download from new to old. Some servers will put you into floodwait if you try to access some of the oldest chat messages.')
 args = parser.parse_args()
 
 
