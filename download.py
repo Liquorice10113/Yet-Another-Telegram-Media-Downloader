@@ -26,7 +26,7 @@ parser.add_argument('-c', '--chat', type=str,
                     help='Specify a chat name like "https://t.me/xxx1234" or just "xxx1234". ')
 parser.add_argument('-l', '--limit-size', type=int, metavar=100,
                     help='Specify a file size limit(MB), default to 100, files larger than this value will be skipped.')
-
+parser.add_argument('-r', '--reverse-order', action='store_true', help='Enable download from new to old. Some server will put you into floodwait if you try to access oldest chat message.')
 args = parser.parse_args()
 
 
@@ -37,7 +37,8 @@ if C.api_hash == "your_api_hash_here":
 media_types = ["video", "photo", "document"]
 media_suffix = {
     "video": "mp4",
-    "photo": "jpg"
+    "photo": "jpg",
+    "document": "bin"
 }
 
 if os.name == 'nt':
@@ -64,7 +65,7 @@ else:
 
 def progress_bar(current, total):
     p = current/total
-    print("\r[" + int(20*p)*"▮"+int(20*(1-p))*"▯",
+    print("\r[" + int(30*p)*"▮"+int(30*(1-p))*"▯",
           end="] {:.2f}/{:.2f}MB".format(current/1024**2, total/1024**2))
     sys.stdout.flush()
 
@@ -81,12 +82,17 @@ async def main():
             with open(path.join(".", chat_id, "progress.json"), 'r') as f:
                 data = json.loads(f.read())
                 offset_id = data["offset_id"]
+                args.reverse_order = data["reverse"]
         else:
             offset_id = 1 + message_batch_size
         while offset_id < chat_history_count:
             cnt = 0
             try:
-                async for message in app.get_chat_history(chat_id, limit=message_batch_size, offset_id=offset_id):
+                if args.reverse_order:
+                    gen = app.get_chat_history(chat_id, limit=message_batch_size, offset=offset_id-message_batch_size-1)
+                else:
+                    gen = app.get_chat_history(chat_id, limit=message_batch_size, offset_id=offset_id)
+                async for message in gen:
                     # print(message)
                     if (quitting):
                         break
@@ -147,7 +153,8 @@ async def main():
             with open(path.join(".", chat_id, "progress.json"), 'w') as f:
                 f.write(json.dumps(
                     {
-                        "offset_id": offset_id
+                        "offset_id": offset_id,
+                        "reverse": True if args.reverse_order else False
                     }
                 ))
 
