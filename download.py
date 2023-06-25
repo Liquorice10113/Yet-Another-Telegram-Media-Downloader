@@ -50,9 +50,9 @@ quitting = False
 
 if args.chat:
     if "https://t.me/" in args.chat:
-        chat_id = args.chat.replace("https://t.me/", "")
+        chat_id = args.chat.replace("https://t.me/", "").lower()
     else:
-        chat_id = args.chat
+        chat_id = args.chat.lower()
 else:
     parser.print_help()
     sys.exit(1)
